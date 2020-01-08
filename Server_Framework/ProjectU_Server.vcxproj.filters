@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{78cb4aef-bd87-4f30-9603-692eabf922a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{d5693f19-ed7b-4623-a405-11995813ce60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\ServerManager">
+      <UniqueIdentifier>{482d68cd-e615-4971-8571-587b86e9b49b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{c634fbba-8a54-4478-95a7-2eda9e092875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\IOCP">
+      <UniqueIdentifier>{b54826f9-332e-4f50-8568-3401811bd563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\SIngleton">
+      <UniqueIdentifier>{e1ef1b08-8bd0-4cc3-8995-2c88727ec43d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Default">
+      <UniqueIdentifier>{7d9fa511-fe7f-494b-b895-4a63cc4b5f00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Thread">
+      <UniqueIdentifier>{d6b8d44d-f2e4-4d52-b451-b3d0faa5f430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Common">
+      <UniqueIdentifier>{2493c6a4-4bff-4add-b79e-3636848becba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Session">
+      <UniqueIdentifier>{7635ab0a-046f-448d-951d-00203b7fb373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\SessionPool">
+      <UniqueIdentifier>{ecc38b92-4807-47ef-8a34-9f42309b3ac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Lock">
+      <UniqueIdentifier>{b33faae4-2f92-4e80-b3cf-433a21b823bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\LogSystem">
+      <UniqueIdentifier>{be5d8cdd-2c93-40a6-9558-f4623c772916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\TextFIleWriter">
+      <UniqueIdentifier>{ff22481d-e1c7-429f-aa84-16586947e763}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_main">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Common\CircularQueue">
+      <UniqueIdentifier>{25da275a-0b33-4606-af15-04fd18a556e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Freelist">
+      <UniqueIdentifier>{1a2f409f-b922-4b3a-b597-f65025549f00}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Singleton.h">
+      <Filter>Common\SIngleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerManager.h">
+      <Filter>Managers\ServerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="IOCP.h">
+      <Filter>Network\IOCP</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>_Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>_Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread.h">
+      <Filter>Common\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Const.h">
+      <Filter>Headers\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>Headers\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Network\Session</Filter>
+    </ClInclude>
+    <ClInclude Include="Lock.h">
+      <Filter>Common\Lock</Filter>
+    </ClInclude>
+    <ClInclude Include="LogSystem.h">
+      <Filter>Common\LogSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="TextFileWriter.h">
+      <Filter>Common\TextFIleWriter</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Freelist.h">
+      <Filter>Common\Freelist</Filter>
+    </ClInclude>
+    <ClInclude Include="Freelist.hpp">
+      <Filter>Common\Freelist</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularQueue.hpp">
+      <Filter>Common\CircularQueue</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>_main</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerManager.cpp">
+      <Filter>Managers\ServerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="IOCP.cpp">
+      <Filter>Network\IOCP</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>_Default</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread.cpp">
+      <Filter>Common\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Network\Session</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionPool.h">
+      <Filter>Network\SessionPool</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionPool.cpp">
+      <Filter>Network\SessionPool</Filter>
+    </ClCompile>
+    <ClCompile Include="LogSystem.cpp">
+      <Filter>Common\LogSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="TextFileWriter.cpp">
+      <Filter>Common\TextFIleWriter</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularQueue.h">
+      <Filter>Common\CircularQueue</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
