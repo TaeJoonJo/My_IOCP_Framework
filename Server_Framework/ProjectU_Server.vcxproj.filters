@@ -113,6 +113,9 @@
     <ClInclude Include="CircularQueue.hpp">
       <Filter>Common\CircularQueue</Filter>
     </ClInclude>
+    <Clinclude Include="SessionPool.h">
+      <Filter>Network\SessionPool</Filter>
+    </Clinclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -132,9 +135,6 @@
     </ClCompile>
     <ClCompile Include="Session.cpp">
       <Filter>Network\Session</Filter>
-    </ClCompile>
-    <ClCompile Include="SessionPool.h">
-      <Filter>Network\SessionPool</Filter>
     </ClCompile>
     <ClCompile Include="SessionPool.cpp">
       <Filter>Network\SessionPool</Filter>

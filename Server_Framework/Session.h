@@ -44,7 +44,7 @@ public:
 	const bool Initalize(SOCKET& s, uint32_t id);
 	const bool Clear();
 	// TODO : IoContext Freelist ±¸Çö
-	const bool Send();
+	const bool Send(void* ppacket, IOContext* poverlapped);
 private:
 	volatile bool isRun_;
 

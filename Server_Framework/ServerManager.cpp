@@ -6,13 +6,14 @@
 #include "Define.h"
 #include "LogSystem.h"
 #include "SessionPool.h"
-#include "Session.h"
 #include "Protocol.h"
+#include "Freelist.h"
 
 // use for session id
 static volatile uint32_t _SessionID;
 
 CServerManager::CServerManager()
+	: pSendIOContextList_(nullptr)
 {
 }
 
@@ -34,6 +35,8 @@ const bool CServerManager::InitalizeServer()
 		_LERROR("SessionPool_ Initalize()");
 		return false;
 	}
+
+	pSendIOContextList_ = new CFreelist<IOContext>(MAX_SESSION);
 
 	if (false == this->InitalizeThread()) {
 		_LERROR("InitalizeThread()");
@@ -321,14 +324,11 @@ const bool CServerManager::WorkerThread()
 				if (ioByte < required) // 완성하지 못하면
 				{
 					psession->RecvBuffer_.Enq(pbuf, ioByte);
-					//memcpy(psession->m_RecvBuffer + psession->m_nPrevSize, pbuf, ioByte);
-					//psession->m_nPrevSize += ioByte;
 					break;
 				}
 				else
 				{
 					psession->RecvBuffer_.Enq(pbuf, required);
-					//memcpy(psession->m_RecvBuffer + psession->m_nPrevSize, pbuf, required);
 					// RecvBuf에 쌓인 데이터 처리
 					PacketProcess(psession);
 
@@ -341,7 +341,7 @@ const bool CServerManager::WorkerThread()
 		} break;
 		case EIOType::SEND_:
 		{ 
-
+			pSendIOContextList_->ReturnData(poverlapped);
 		} break;
 		default:
 		{

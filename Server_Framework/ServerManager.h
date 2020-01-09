@@ -3,12 +3,14 @@
 #define __SERVERMANAGER_H__
 
 #include "Thread.h"
+#include "Session.h"
 
 class CIOCompletionPort;
 
 class CSessionPool;
 
-class CSession;
+template<typename T>
+class CFreelist;
 
 class CServerManager
 {
@@ -47,7 +49,8 @@ private:
 	CMultiThread		WorkerThread_;
 
 	std::shared_ptr<CSessionPool> SessionPool_;
-};
 
+	CFreelist<IOContext>* pSendIOContextList_;
+};
 
 #endif // !__SERVERMANAGER_H__

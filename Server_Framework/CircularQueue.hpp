@@ -1,7 +1,7 @@
 
 
 template<typename T>
-inline void CCircularQueue<T>::Clear()
+void CCircularQueue<T>::Clear()
 {
 	//memset(Queue_, 0x00, MAX_BUFFER);
 	Queue_.fill(0);
@@ -9,7 +9,7 @@ inline void CCircularQueue<T>::Clear()
 }
 
 template<typename T>
-inline const bool CCircularQueue<T>::Enq(const T* pdata, uint32_t dataSize)
+const bool CCircularQueue<T>::Enq(const T* pdata, uint32_t dataSize)
 {
 	if (dataSize > GetRemainQueueSize())
 		return false;
@@ -35,7 +35,7 @@ inline const bool CCircularQueue<T>::Enq(const T* pdata, uint32_t dataSize)
 }
 
 template<typename T>
-inline const bool CCircularQueue<T>::Deq(T* pdata, uint32_t dataSize)
+const bool CCircularQueue<T>::Deq(T* pdata, uint32_t dataSize)
 {
 	if (dataSize < GetNowQueueSize())
 		return false;

@@ -5,8 +5,7 @@
 constexpr int32_t SERVER_PORT = 3600;
 
 constexpr int32_t MAX_BUFFER = 1024;
-constexpr int32_t MAX_STRING = 30;
-//constexpr unsigned int NOTREGISTED_UINT = -1;
+constexpr int32_t MAX_STRING = 64;
 
 #endif // !__CONST_H__
 

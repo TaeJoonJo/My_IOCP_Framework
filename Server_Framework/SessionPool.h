@@ -34,7 +34,7 @@ private:
 
 	// 실제로 사용중인 Sessions
 	UNMAPSESSIONPOOL					UsingSessions_;
-	CMutexLock	SessionLock_;
+	CMutexLock							SessionLock_;
 public:
 	const CSession* GetSession(const uint32_t sessionID) const {
 		return UsingSessions_.at(sessionID);
