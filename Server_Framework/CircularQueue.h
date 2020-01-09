@@ -34,11 +34,12 @@ public:
 		return &Queue_[(FrontIndex_ + 1 + index) % MAX_BUFFER];
 	}
 	inline const uint32_t GetNowQueueSize() const {
+		if (FrontIndex_ == RearIndex_) return 0;
 		uint32_t front = ((FrontIndex_ + 1) % MAX_BUFFER);
-		return front <= RearIndex_ ? (RearIndex_ - front) : ((MAX_BUFFER - front) + RearIndex_);
+		return front <= RearIndex_ ? (RearIndex_ - FrontIndex_) : ((MAX_BUFFER - front) + RearIndex_);
 	}
 	inline const uint32_t GetRemainQueueSize() const {
-		return MAX_BUFFER - GetNowQueueSize();
+		return (MAX_BUFFER - 1) - GetNowQueueSize();
 	}
 };
 
