@@ -15,14 +15,14 @@ const bool CCircularQueue<T>::Enq(const T* pdata, uint32_t dataSize)
 
 	const T* now = pdata;
 
-	RearIndex_ = (RearIndex_ + 1) % MAX_BUFFER;
+	RearIndex_ = (RearIndex_ + 1) % MAX_QUEUE;
 
 	if (RearIndex_ < FrontIndex_) {
 		memcpy((void*)&Queue_[RearIndex_], now, dataSize);
 		RearIndex_ += dataSize - 1;
 	}
 	else {
-		uint32_t reartoendSize = MAX_BUFFER - (RearIndex_);
+		uint32_t reartoendSize = MAX_QUEUE - (RearIndex_);
 		if (reartoendSize > dataSize) {
 			memcpy((void*)&Queue_[RearIndex_], now, dataSize);
 			RearIndex_ += dataSize - 1;
@@ -47,16 +47,16 @@ const bool CCircularQueue<T>::Deq(T* pdata, uint32_t dataSize)
 
 	T* now = pdata;
 
-	FrontIndex_ = (FrontIndex_ + 1) % MAX_BUFFER;
+	FrontIndex_ = (FrontIndex_ + 1) % MAX_QUEUE;
 	if (FrontIndex_ < RearIndex_) {
 		memcpy(now, (const void*)&Queue_[FrontIndex_], dataSize);
-		FrontIndex_ += (dataSize - 1) % MAX_BUFFER;
+		FrontIndex_ += (dataSize - 1) % MAX_QUEUE;
 	}
 	else {
 		uint32_t fronttoendSize = MAX_BUFFER - (FrontIndex_ + 1);
 		if (dataSize < fronttoendSize) {
 			memcpy(now, (const void*)&Queue_[FrontIndex_], dataSize);
-			FrontIndex_ += (dataSize - 1) % MAX_BUFFER;
+			FrontIndex_ += (dataSize - 1) % MAX_QUEUE;
 		}
 		else {
 			memcpy(now, (const void*)&Queue_[FrontIndex_], fronttoendSize);

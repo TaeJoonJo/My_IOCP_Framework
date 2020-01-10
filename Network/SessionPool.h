@@ -3,8 +3,8 @@
 #define __SESSIONPOOL_H__
 
 #include <unordered_map>
-#include "Singleton.h"
-#include "Lock.h"
+#include "../Common/Singleton.h"
+#include "../Common/Lock.h"
 
 class CSession;
 

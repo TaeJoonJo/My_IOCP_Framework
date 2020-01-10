@@ -1,13 +1,14 @@
+
 #include "stdafx.h"
 #include "ServerManager.h"
-#include "Network.h"
-#include "IOCP.h"
-#include "Const.h"
-#include "Define.h"
-#include "LogSystem.h"
-#include "SessionPool.h"
-#include "Protocol.h"
-#include "Freelist.h"
+#include "../Include/Const.h"
+#include "../Include/Define.h"
+#include "../Network/Network.h"
+#include "../Network/IOCP.h"
+#include "../Network/SessionPool.h"
+#include "../Network/Protocol.h"
+#include "../Common/LogSystem.h"
+#include "../Common/Freelist.h"
 
 // use for session id
 static volatile uint32_t _SessionID;

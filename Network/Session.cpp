@@ -1,5 +1,5 @@
 #include "Session.h"
-#include "Define.h"
+#include "../Include/Define.h"
 
 CSession::CSession()
 	: isRun_(false), ID_(UNREGISTED_SESSIONID)

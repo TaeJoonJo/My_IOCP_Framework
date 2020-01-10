@@ -2,9 +2,8 @@
 #ifndef __THREAD_H__
 #define __THREAD_H__
 
-#include "Headers.h"
 #include <thread>
-#include <functional>
+#include "../Include/Headers.h"
 
 constexpr uint16_t MAX_THREAD = 16;
 

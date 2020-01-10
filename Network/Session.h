@@ -2,10 +2,10 @@
 #ifndef __SESSION_H__
 #define __SESSION_H__
 
-#include "Headers.h"
-#include "Const.h"
-#include "Lock.h"
-#include "CircularQueue.h"
+#include "../Include/Headers.h"
+#include "../Include/Const.h"
+#include "../Common/Lock.h"
+#include "../Common/CircularQueue.h"
 
 enum EIOType {
 	RECV_ = 0,

@@ -2,9 +2,9 @@
 #ifndef __NETWORK_H__
 #define __NETWORK_H__
 
-#include "Headers.h"
-#include "Define.h"
-#include "LogSystem.h"
+#include "../Include/Headers.h"
+#include "../Include/Define.h"
+#include "../Common/LogSystem.h"
 
 namespace Network
 {

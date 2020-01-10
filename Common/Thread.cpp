@@ -1,5 +1,5 @@
 #include "Thread.h"
-#include "Const.h"
+#include "../Include/Const.h"
 
 CThread::CThread()
 	: isRun_(false),

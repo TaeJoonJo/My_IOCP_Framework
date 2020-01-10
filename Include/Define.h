@@ -2,6 +2,7 @@
 #ifndef __DEFINE_H__
 #define __DEFINE_H__
 
+#include "Headers.h"
 
 // printf
 #define _PFDEBUG(f) printf("Fail %s in %s\n", #f, __FUNCTION__)

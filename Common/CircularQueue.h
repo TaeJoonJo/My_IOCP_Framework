@@ -2,8 +2,9 @@
 #ifndef __CIRCULARQUEUE_H__
 #define __CIRCULARQUEUE_H__
 
-#include <iostream>
-#include "Const.h"
+#include "../Include/Headers.h"
+
+constexpr uint32_t MAX_QUEUE = 1024;
 
 template<typename T>
 class CCircularQueue {
@@ -23,7 +24,7 @@ public:
 	const bool Enq(const T* pdata, uint32_t dataSize);
 	const bool Deq(T* pdata, uint32_t dataSize);
 private:
-	std::array<T, MAX_BUFFER>	Queue_;
+	std::array<T, MAX_QUEUE>	Queue_;
 
 	// Front 자리는 비워둔다.
 	uint32_t					FrontIndex_;
@@ -31,15 +32,15 @@ private:
 public:
 	// 데이터가 있는 인덱스부터 몇번째 데이터를 얻어올지
 	inline const T* GetData(uint32_t index) const {
-		return &Queue_[(FrontIndex_ + 1 + index) % MAX_BUFFER];
+		return &Queue_[(FrontIndex_ + 1 + index) % MAX_QUEUE];
 	}
 	inline const uint32_t GetNowQueueSize() const {
 		if (FrontIndex_ == RearIndex_) return 0;
-		uint32_t front = ((FrontIndex_ + 1) % MAX_BUFFER);
-		return front <= RearIndex_ ? (RearIndex_ - FrontIndex_) : ((MAX_BUFFER - front) + RearIndex_);
+		uint32_t front = ((FrontIndex_ + 1) % MAX_QUEUE);
+		return front <= RearIndex_ ? (RearIndex_ - FrontIndex_) : ((MAX_QUEUE - front) + RearIndex_);
 	}
 	inline const uint32_t GetRemainQueueSize() const {
-		return (MAX_BUFFER - 1) - GetNowQueueSize();
+		return (MAX_QUEUE - 1) - GetNowQueueSize();
 	}
 };
 

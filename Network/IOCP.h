@@ -2,7 +2,7 @@
 #ifndef __IOCP_H__
 #define __IOCP_H__
 
-#include "Singleton.h"
+#include "../Common/Singleton.h"
 
 class CIOCompletionPort : public
 	Singleton::CDynamicSingleton<CIOCompletionPort>

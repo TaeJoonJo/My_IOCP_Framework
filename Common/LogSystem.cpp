@@ -1,6 +1,5 @@
 #include "LogSystem.h"
 
-#include "Headers.h"
 #include <iomanip>
 #include <sstream>
 #include "TextFileWriter.h"

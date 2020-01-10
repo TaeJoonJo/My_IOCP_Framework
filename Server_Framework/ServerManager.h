@@ -2,8 +2,8 @@
 #ifndef __SERVERMANAGER_H__
 #define __SERVERMANAGER_H__
 
-#include "Thread.h"
-#include "Session.h"
+#include "../Common/Thread.h"
+#include "../Network/Session.h"
 
 class CIOCompletionPort;
 

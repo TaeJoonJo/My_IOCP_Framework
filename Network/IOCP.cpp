@@ -1,6 +1,7 @@
-#include "stdafx.h"
+#include "../Include/Headers.h"
+#include "../Include/Define.h"
 #include "IOCP.h"
-#include "Define.h"
+
 CIOCompletionPort::CIOCompletionPort()
 	: IOCP_(INVALID_HANDLE_VALUE)
 {

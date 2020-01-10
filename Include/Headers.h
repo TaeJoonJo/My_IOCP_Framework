@@ -2,7 +2,7 @@
 #ifndef __HEADERS_H__
 #define __HEADERS_H__
 
-#include "stdafx.h"
+#include "../Server_Framework/stdafx.h"
 
 #pragma comment(lib, "ws2_32")
 
@@ -14,6 +14,8 @@
 #include <array>
 #include <unordered_set>
 #include <mutex>
+#include <string>
+#include <functional>
 
 #endif // !__HEADERS_H__
 

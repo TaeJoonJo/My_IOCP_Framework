@@ -2,7 +2,6 @@
 #ifndef __TEXTFILEWRITER_H__
 #define __TEXTFILEWRITER_H__
 
-#include "Headers.h"
 #include <fstream>
 #include "Lock.h"
 

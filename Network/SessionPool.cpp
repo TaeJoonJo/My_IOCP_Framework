@@ -1,6 +1,6 @@
 #include "SessionPool.h"
 #include "Session.h"
-#include "Define.h"
+#include "../Include/Define.h"
 
 CSessionPool::CSessionPool()
 {

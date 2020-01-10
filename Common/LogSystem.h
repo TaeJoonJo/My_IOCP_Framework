@@ -3,6 +3,7 @@
 #define __LOGSYSTEM_H__
 
 #include "Singleton.h"
+#include "../Include/Headers.h"
 
 #define DEFALUT_LOG_PATH "serverlog.log"
 
