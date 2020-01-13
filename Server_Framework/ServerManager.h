@@ -50,7 +50,7 @@ private:
 
 	std::shared_ptr<CSessionPool> SessionPool_;
 
-	CFreelist<IOContext>* pSendIOContextList_;
+	std::unique_ptr<CFreelist<IOContext>> pSendIOContextList_;
 };
 
 #endif // !__SERVERMANAGER_H__

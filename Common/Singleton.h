@@ -4,8 +4,7 @@
 
 #include "../Include/Headers.h"
 
-namespace Singleton 
-{
+namespace Singleton {
 
 	template<typename T>
 	class CDynamicSingleton {

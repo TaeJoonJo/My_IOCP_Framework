@@ -37,7 +37,7 @@ const bool CServerManager::InitalizeServer()
 		return false;
 	}
 
-	pSendIOContextList_ = new CFreelist<IOContext>(MAX_SESSION);
+	pSendIOContextList_ = std::make_unique<CFreelist<IOContext>>(MAX_SESSION);
 
 	if (false == this->InitalizeThread()) {
 		_LERROR("InitalizeThread()");
@@ -144,8 +144,9 @@ const bool CServerManager::StartServer()
 {
 	_LINFO("StartServer() Start");
 
-	if (this->InitalizeServer() == false)
+	if (this->InitalizeServer() == false) {
 		return false;
+	}
 
 	_LINFO("StartServer() End");
 
@@ -155,16 +156,18 @@ const bool CServerManager::StartServer()
 void CServerManager::_AcceptThread(LPVOID lp)
 {
 	CServerManager* pthis = reinterpret_cast<CServerManager*>(lp);
-	if (nullptr == pthis)
+	if (nullptr == pthis) {
 		return;
+	}
 	pthis->AcceptThread();
 }
 
 void CServerManager::_WorkerThread(LPVOID lp)
 {
 	CServerManager* pthis = reinterpret_cast<CServerManager*>(lp);
-	if (nullptr == pthis)
+	if (nullptr == pthis) {
 		return;
+	}
 	pthis->WorkerThread();
 }
 
@@ -266,27 +269,27 @@ const bool CServerManager::WorkerThread()
 	CSession*			psession = nullptr;
 	IOContext*			poverlapped = nullptr;
 	DWORD				ioByte = 0;
-	int					rtv = 0;
+	int					returnValue = 0;
 	EIOType				ioType;
 
 	while (true == WorkerThread_.IsRun()) {
 		psession = nullptr;
 		poverlapped = nullptr;
 		ioByte = 0;
-		rtv = 0;
+		returnValue = 0;
 
 		if (false == GetQueuedCompletionStatus(IOCP_->GetIOCP(), &ioByte, 
 												reinterpret_cast<ULONG_PTR*>(&psession), 
 												reinterpret_cast<LPOVERLAPPED*>(&poverlapped), INFINITE)) {
-			rtv = WSAGetLastError();
+			returnValue = WSAGetLastError();
 		}
 
 		// 오류 처리
-		if (0 != rtv) {
-			if (WAIT_TIMEOUT == rtv) {
+		if (0 != returnValue) {
+			if (WAIT_TIMEOUT == returnValue) {
 
 			}
-			else if (ERROR_NETNAME_DELETED == rtv) {
+			else if (ERROR_NETNAME_DELETED == returnValue) {
 
 			}
 			else {
@@ -316,19 +319,17 @@ const bool CServerManager::WorkerThread()
 				packetHeader = reinterpret_cast<const PACKET_HEADER*>(psession->RecvBuffer_.GetData(0));
 				packetSize = static_cast<int>(packetHeader->size_);
 			}
-			while (ioByte > 0)
-			{
-				if (packetSize == 0)
+			while (0 < ioByte) {
+				if (packetSize == 0) {
 					packetSize = pbuf[0];
+				}
 				UINT required = packetSize - psession->RecvBuffer_.GetNowQueueSize();		// 패킷을 완성하는데 필요한 바이트 수
 				//UINT required = packetSize - psession->m_nPrevSize;		// 패킷을 완성하는데 필요한 바이트 수
-				if (ioByte < required) // 완성하지 못하면
-				{
+				if (ioByte < required) { // 완성하지 못하면
 					psession->RecvBuffer_.Enq(pbuf, ioByte);
 					break;
 				}
-				else
-				{
+				else {
 					psession->RecvBuffer_.Enq(pbuf, required);
 					// RecvBuf에 쌓인 데이터 처리
 					PacketProcess(psession);
@@ -337,6 +338,16 @@ const bool CServerManager::WorkerThread()
 					ioByte -= required;
 					pbuf += required;
 					packetSize = 0;
+				}
+			}
+			DWORD flags{};
+			returnValue = WSARecv(psession->GetSocket(), &(psession->IoContext_.Wsabuf_), 1, NULL, &flags, &(psession->IoContext_.Overlapped_), NULL);
+
+			if (SOCKET_ERROR == returnValue) {
+				int errCode = WSAGetLastError();
+				if (WSA_IO_PENDING != errCode) {
+					_LERROR("WorkerThread WSARecv() Error ");
+					return false;
 				}
 			}
 		} break;
@@ -365,12 +376,11 @@ const bool CServerManager::PacketProcess(CSession* psession)
 	PACKET_HEADER* pheader = reinterpret_cast<PACKET_HEADER*>(buf);
 	psession->RecvBuffer_.Deq(buf + sizeof(PACKET_HEADER), pheader->size_ - sizeof(PACKET_HEADER));
 
-	switch (pheader->type_)
-	{
+	switch (pheader->type_) {
 	case EPacketType::Test_:
 	{
-		C2S_PACKET_TEST* pbody = reinterpret_cast<C2S_PACKET_TEST*>(buf);
-		uint32_t id = pbody->id;
+		C2S_PACKET_TEST* ppacket = reinterpret_cast<C2S_PACKET_TEST*>(buf);
+		uint32_t id = ppacket->id;
 	} break;
 
 	default:

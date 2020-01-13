@@ -17,11 +17,11 @@ private:
 		SData() : Data_(), IsUse_(false), pNext_(nullptr) {}
 		T				Data_;
 		volatile bool	IsUse_;
-		SData*			pNext_;
+		SData* volatile	pNext_;
 	};
 public:
 	const bool Clear();
-	const T* GetData();
+	T* GetData();
 	const bool ReturnData(T* preturnData);
 private:
 	SData* pFront_;

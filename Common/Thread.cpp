@@ -29,8 +29,9 @@ const bool CThread::Initalize(void (*func)(LPVOID), LPVOID lp)
 
 const bool CThread::Start()
 {
-	if (true == isRun_)
+	if (true == isRun_) {
 		return false;
+	}
 
 	isRun_ = true;
 
@@ -52,8 +53,9 @@ const bool CThread::Stop()
 
 const bool CThread::Join()
 {
-	if (false == this->isRun_)
+	if (false == this->isRun_) {
 		return false;
+	}
 
 	Thread_.join();
 
@@ -65,8 +67,9 @@ const bool CThread::Join()
 void CThread::_ThreadFunc(LPVOID lp)
 {
 	CThread* pthis = reinterpret_cast<CThread*>(lp);
-	if (nullptr != pthis)
+	if (nullptr != pthis) {
 		pthis->Run();
+	}
 }
 
 const bool CThread::Run()
@@ -114,8 +117,9 @@ const bool CMultiThread::Initalize(uint16_t threadNum, void(*func)(LPVOID), LPVO
 
 const bool CMultiThread::Start()
 {
-	if (true == isRun_)
+	if (true == isRun_) {
 		return false;
+	}
 
 	bool brt = true;
 
@@ -135,8 +139,9 @@ const bool CMultiThread::Stop()
 	bool brt = true;
 
 	for (auto& t : vThreads_) {
-		if (false == t.Stop())
+		if (false == t.Stop()) {
 			brt = false;
+		}
 	}
 
 	isRun_ = false;

@@ -11,7 +11,7 @@ constexpr uint16_t WORKERTHREAD_NUM = MAX_THREAD - 2;
 
 static volatile uint16_t _ThreadID = 0;
 
-using ThreadFunc = std::function<void(LPVOID)>;
+using THREADFUNC = std::function<void(LPVOID)>;
 
 class CThread {
 public:
@@ -35,7 +35,7 @@ private:
 
 	std::thread Thread_;
 	LPVOID		lpParam_;
-	ThreadFunc	Func_;
+	THREADFUNC	Func_;
 
 	uint16_t	ID_;
 public:

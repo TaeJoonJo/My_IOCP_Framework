@@ -13,7 +13,7 @@ enum EIOType {
 };
 
 // For Overlapped
-typedef struct stIOContext {
+typedef struct STIOContext {
 	WSAOVERLAPPED	Overlapped_;
 	WSABUF			Wsabuf_;
 	char			Buf_[MAX_BUFFER];
@@ -64,6 +64,9 @@ public:
 	}
 	inline const uint32_t GetID() const {
 		return ID_;
+	}
+	inline const SOCKET GetSocket() const {
+		return Socket_;
 	}
 	inline const ESessionStatus GetStatus() const {
 		return eStatus_;

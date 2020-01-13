@@ -32,7 +32,7 @@ const bool CFreelist<T>::Clear()
 	Lock_.Lock();
 	{
 		SData* pnow = pFront_->pNext_;
-		SData* pnext = pnow->next;
+		SData* pnext = pnow->pNext_;
 		while (nullptr != pnow) {
 			delete pnow;
 			pnow = pnext;
@@ -45,7 +45,7 @@ const bool CFreelist<T>::Clear()
 }
 
 template<typename T>
-const T* CFreelist<T>::GetData()
+T* CFreelist<T>::GetData()
 {
 	T* pdata = nullptr;
 

@@ -6,8 +6,7 @@
 #include "../Include/Define.h"
 #include "../Common/LogSystem.h"
 
-namespace Network
-{
+namespace Network {
 
 	static const bool StartNetwork()
 	{

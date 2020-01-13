@@ -8,6 +8,9 @@
 
 class CSession;
 
+template<typename T>
+class CFreslist;
+
 #ifdef _DEBUG
 constexpr uint32_t MAX_SESSION = 1000;
 #else
@@ -29,6 +32,9 @@ public:
 	CSession*		JoinSession(SOCKET& socket, uint32_t sessionID);
 	const bool		LeaveSession(CSession* psession);
 	const bool		LeaveSession(uint32_t sessionID);
+
+	const bool	Broadcasting(void* ppacket, std::unique_ptr<CFreelist<IOContext>> freelist);
+	const bool	Broadcasting(void* ppacket, std::unique_ptr<CFreelist<IOContext>> freelist, CSession::ESessionStatus sendSessionStatus);
 private:
 	std::array<CSession*, MAX_SESSION>	aSessionPool_;
 
@@ -36,9 +42,10 @@ private:
 	UNMAPSESSIONPOOL					UsingSessions_;
 	CMutexLock							SessionLock_;
 public:
-	const CSession* GetSession(const uint32_t sessionID) const {
+	inline const CSession* GetSession(const uint32_t sessionID) const {
 		return UsingSessions_.at(sessionID);
 	}
+	const uint32_t GetCurrentSessionNum();
 };
 
 #endif // !__SESSIONPOOL_H__

@@ -42,8 +42,9 @@ const bool CCircularQueue<T>::Enq(const T* pdata, uint32_t dataSize)
 template<typename T>
 const bool CCircularQueue<T>::Deq(T* pdata, uint32_t dataSize)
 {
-	if (dataSize > GetNowQueueSize())
+	if (dataSize > GetNowQueueSize()) {
 		return false;
+	}
 
 	T* now = pdata;
 

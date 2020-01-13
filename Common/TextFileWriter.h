@@ -16,9 +16,9 @@ public:
 	const bool ChangeFilePath(const char* path);
 	const bool Write(const char* str);
 private:
-	std::string filePath_;
-	CMutexLock fileLock_;
-	std::ofstream oS_;
+	std::string			FilePath_;
+	CMutexLock			FileLock_;
+	std::ofstream		OS_;
 };
 
 #endif // !__TEXTFILEWRITER_H__

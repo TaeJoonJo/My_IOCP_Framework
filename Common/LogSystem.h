@@ -35,13 +35,13 @@ public:
     static void Warning(const char* str, ...);
     static void Error(const char* str, ...);
 private:
-    std::string fileName_;
-    uint32_t maxCharLength_;
+    std::string                             FileName_;
+    uint32_t                                MaxCharLength_;
 
-    std::array<std::string, LOG_TYPE_NUM> logTypes_;
-    const std::string unknownLogType_;
+    std::array<std::string, LOG_TYPE_NUM>   LogTypes_;
+    const std::string                       UnknownLogType_;
 public:
-    CTextFileWriter* fileWriter_;
+    CTextFileWriter*                        FileWriter_;
 };
 
 #define _LINFO(str, ...) CLogSystem::Info(str);

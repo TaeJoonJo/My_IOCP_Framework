@@ -1,6 +1,8 @@
 #include "SessionPool.h"
 #include "Session.h"
 #include "../Include/Define.h"
+#include "../Common/Freelist.h"
+#include "../Common/LogSystem.h"
 
 CSessionPool::CSessionPool()
 {
@@ -45,8 +47,9 @@ CSession* CSessionPool::JoinSession(SOCKET& socket, uint32_t sessionID)
 	{
 		for (int i = 0; i < MAX_SESSION; ++i) {
 			if (false == aSessionPool_[i]->IsRun()) {
-				if (false == aSessionPool_[i]->Initalize(socket, sessionID))
+				if (false == aSessionPool_[i]->Initalize(socket, sessionID)) {
 					break;
+				}
 				psession = aSessionPool_[i];
 				UsingSessions_[sessionID] = psession;
 			}
@@ -68,8 +71,9 @@ const bool CSessionPool::LeaveSession(CSession* psession)
 	}
 	SessionLock_.UnLock();
 
-	if(UNREGISTED_SESSIONID != sessionID)
+	if (UNREGISTED_SESSIONID != sessionID) {
 		returnValue = LeaveSession(sessionID);
+	}
 
 	return returnValue;
 }
@@ -94,4 +98,60 @@ const bool CSessionPool::LeaveSession(uint32_t sessionID)
 	SessionLock_.UnLock();
 
 	return true;
+}
+
+const bool CSessionPool::Broadcasting(void* ppacket, std::unique_ptr<CFreelist<IOContext>> freelist)
+{
+	bool returnValue = true;
+	CSession* psession = nullptr;
+
+	SessionLock_.Lock();
+	{
+		for (auto& session : UsingSessions_) {
+			psession = session.second;
+			returnValue = psession->Send(ppacket, freelist->GetData());
+			if (false == returnValue) {
+				_LWARNING("Broadcasting");
+			}
+		}
+	}
+	SessionLock_.UnLock();
+
+	return returnValue;
+}
+
+const bool CSessionPool::Broadcasting(void* ppacket, std::unique_ptr<CFreelist<IOContext>> freelist, CSession::ESessionStatus sendSessionStatus)
+{
+	bool returnValue = true;
+	CSession* psession = nullptr;
+
+	SessionLock_.Lock();
+	{
+		for (auto& session : UsingSessions_) {
+			psession = session.second;
+			if (sendSessionStatus != psession->GetStatus()) {
+				continue;
+			}
+			returnValue = psession->Send(ppacket, freelist->GetData());
+			if (false == returnValue) {
+				_LWARNING("Broadcasting");
+			}
+		}
+	}
+	SessionLock_.UnLock();
+
+	return returnValue;
+}
+
+const uint32_t CSessionPool::GetCurrentSessionNum()
+{
+	uint32_t currentSessionNum = 0;
+
+	SessionLock_.Lock();
+	{
+		currentSessionNum = static_cast<uint32_t>(UsingSessions_.size());
+	}
+	SessionLock_.UnLock();
+
+	return currentSessionNum;
 }

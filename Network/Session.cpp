@@ -17,8 +17,9 @@ CSession::~CSession()
 
 const bool CSession::Initalize(SOCKET& s, uint32_t id)
 {
-	if (s == INVALID_SOCKET)
+	if (s == INVALID_SOCKET) {
 		return false;
+	}
 
 	isRun_ = true;
 
@@ -43,10 +44,12 @@ const bool CSession::Clear()
 
 const bool CSession::Send(void* ppacket, IOContext* poverlapped)
 {
-	if (INVALID_SOCKET == Socket_)
+	if (INVALID_SOCKET == Socket_) {
 		return false;
-	if (false == isRun_)
+	}
+	if (false == isRun_) {
 		return false;
+	}
 
 	int retval = 0;
 	char* pbuf = reinterpret_cast<char*>(ppacket);
@@ -64,11 +67,9 @@ const bool CSession::Send(void* ppacket, IOContext* poverlapped)
 	ZeroMemory(&sendContext->Overlapped_, sizeof(WSAOVERLAPPED));
 
 	retval = WSASend(Socket_, &sendContext->Wsabuf_, 1, 0, 0, &sendContext->Overlapped_, NULL);
-	if (SOCKET_ERROR == retval)
-	{
+	if (SOCKET_ERROR == retval) {
 		int errCode = WSAGetLastError();
-		if (WSA_IO_PENDING != errCode)
-		{
+		if (WSA_IO_PENDING != errCode) {
 			return false;
 		}
 	}

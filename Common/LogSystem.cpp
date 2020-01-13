@@ -5,19 +5,19 @@
 #include "TextFileWriter.h"
 
 CLogSystem::CLogSystem() 
-    : fileName_()
-    , maxCharLength_(0)
-    , unknownLogType_("UNKNOWN") 
-    , fileWriter_(nullptr)
+    : FileName_()
+    , MaxCharLength_(0)
+    , UnknownLogType_("UNKNOWN") 
+    , FileWriter_(nullptr)
 {
-    logTypes_[CLogSystem::ELogType::INFO_] = "INFO";
-    logTypes_[CLogSystem::ELogType::WARNING_] = "WARNING";
-    logTypes_[CLogSystem::ELogType::ERROR_] = "ERROR";
+    LogTypes_[CLogSystem::ELogType::INFO_] = "INFO";
+    LogTypes_[CLogSystem::ELogType::WARNING_] = "WARNING";
+    LogTypes_[CLogSystem::ELogType::ERROR_] = "ERROR";
 
-    maxCharLength_ = static_cast<uint32_t>(unknownLogType_.size());
-    for (const std::string& logType : logTypes_) {
-        if (maxCharLength_ < logType.size()) {
-            maxCharLength_ = static_cast<uint32_t>(logType.size());
+    MaxCharLength_ = static_cast<uint32_t>(UnknownLogType_.size());
+    for (const std::string& logType : LogTypes_) {
+        if (MaxCharLength_ < logType.size()) {
+            MaxCharLength_ = static_cast<uint32_t>(logType.size());
         }
     }
 }
@@ -42,13 +42,13 @@ void CLogSystem::Log(const char* text, ELogType type)
     static auto plogger = CLogSystem::GetInstance();
     
     std::ostringstream oss;
-    oss << std::setfill(' ') << std::setw(plogger->maxCharLength_);
+    oss << std::setfill(' ') << std::setw(plogger->MaxCharLength_);
 
     try {
-        oss << plogger->logTypes_.at(type);
+        oss << plogger->LogTypes_.at(type);
     }
     catch (...) {
-        oss << plogger->unknownLogType_;
+        oss << plogger->UnknownLogType_;
     }
 
     SYSTEMTIME st;
@@ -66,17 +66,17 @@ void CLogSystem::Log(const char* text, ELogType type)
     puts(oss.str().c_str());
 #endif
     
-    if (false == plogger->fileWriter_->Write(oss.str().c_str())) {
+    if (false == plogger->FileWriter_->Write(oss.str().c_str())) {
 
     }
 }
 
 const bool CLogSystem::Initalize(const char* path)
 {
-    fileName_ = path;
+    FileName_ = path;
 
     static CTextFileWriter textWriter{ path };
-    fileWriter_ = &textWriter;
+    FileWriter_ = &textWriter;
 
     SYSTEMTIME st;
     GetLocalTime(&st);
@@ -91,7 +91,7 @@ const bool CLogSystem::Initalize(const char* path)
 
     oss << '\n' << '\n';
 
-    fileWriter_->Write(oss.str().c_str());
+    FileWriter_->Write(oss.str().c_str());
 
     return true;
 }
