@@ -5,11 +5,8 @@
 #include <unordered_map>
 #include "../Common/Singleton.h"
 #include "../Common/Lock.h"
-
-class CSession;
-
-template<typename T>
-class CFreslist;
+#include "../Common/Freelist.h"
+#include "Session.h"
 
 #ifdef _DEBUG
 constexpr uint32_t MAX_SESSION = 1000;
@@ -33,8 +30,8 @@ public:
 	const bool		LeaveSession(CSession* psession);
 	const bool		LeaveSession(uint32_t sessionID);
 
-	const bool	Broadcasting(void* ppacket, std::unique_ptr<CFreelist<IOContext>> freelist);
-	const bool	Broadcasting(void* ppacket, std::unique_ptr<CFreelist<IOContext>> freelist, CSession::ESessionStatus sendSessionStatus);
+	const bool	Broadcasting(void* ppacket, std::unique_ptr<CFreelist<IOContext>>& freelist);
+	const bool	Broadcasting(void* ppacket, std::unique_ptr<CFreelist<IOContext>>& freelist, CSession::ESessionStatus sendSessionStatus);
 private:
 	std::array<CSession*, MAX_SESSION>	aSessionPool_;
 

@@ -3,6 +3,7 @@
 #define __PROTOCOL_H__
 
 #include <stdint.h>
+#include "../Include/Const.h"
 
 enum EPacketType {
 	Test_
@@ -24,22 +25,22 @@ public:
 class S2C_PACKET_TEST {
 public:
 	explicit S2C_PACKET_TEST(char packetSize, EPacketType packetType)
-		: header(std::move(PACKET_HEADER(packetSize, packetType)))
-		, id()
+		: header(packetSize, packetType)
+		, str()
 	{}
 public:
 	PACKET_HEADER header;
-	uint32_t id;
+	TCHAR str[MAX_STRING];
 };
 
 class C2S_PACKET_TEST {
 	explicit C2S_PACKET_TEST(char packetSize, EPacketType packetType)
-		: header(std::move(PACKET_HEADER(packetSize, packetType)))
-		, id()
+		: header(packetSize, packetType)
+		, str()
 	{}
 public:
 	PACKET_HEADER header;
-	uint32_t id;
+	TCHAR str[MAX_STRING];
 };
 
 #endif // !__PROTOCOL_H__

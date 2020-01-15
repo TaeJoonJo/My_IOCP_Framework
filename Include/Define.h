@@ -4,6 +4,14 @@
 
 #include "Headers.h"
 
+#ifdef DEBUG
+#define SERVERIP "127.0.0.1"
+#else
+#define SERVERIP "127.0.0.1"
+#endif // DEBUG
+
+#define SERVERPORT 3600
+
 // printf
 #define _PFDEBUG(f) printf("Fail %s in %s\n", #f, __FUNCTION__)
 

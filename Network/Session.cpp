@@ -74,5 +74,5 @@ const bool CSession::Send(void* ppacket, IOContext* poverlapped)
 		}
 	}
 
-	return false;
+	return true;
 }

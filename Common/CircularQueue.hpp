@@ -1,4 +1,6 @@
 
+#ifndef __CIRCULARQUEUE_HPP__
+#define __CIRCULARQUEUE_HPP__
 
 template<typename T>
 void CCircularQueue<T>::Clear()
@@ -70,3 +72,5 @@ const bool CCircularQueue<T>::Deq(T* pdata, uint32_t dataSize)
 
 	return true;
 }
+
+#endif // !__CIRCULARQUEUE_HPP__

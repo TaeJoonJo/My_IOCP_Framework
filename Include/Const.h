@@ -4,10 +4,8 @@
 
 #include <stdint.h>
 
-constexpr int32_t SERVER_PORT = 3600;
-
 constexpr int32_t MAX_BUFFER = 1024;
-constexpr int32_t MAX_STRING = 64;
+constexpr int32_t MAX_STRING = 32;
 
 #endif // !__CONST_H__
 

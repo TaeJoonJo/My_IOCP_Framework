@@ -1,4 +1,6 @@
 
+#ifndef __FREELIST_HPP__
+#define __FREELIST_HPP__
 
 template<typename T>
 CFreelist<T>::CFreelist(uint32_t dataNum)
@@ -54,10 +56,11 @@ T* CFreelist<T>::GetData()
 		SData* pnow = pFront_->pNext_;
 		while (nullptr != pnow) {
 			if (false == pnow->IsUse_) {
-				pdata = pnow->Data_;
+				pdata = &pnow->Data_;
 				pnow->IsUse_ = true;
 				break;
 			}
+			pnow = pnow->pNext_;
 		}
 		if (nullptr == pdata) {
 			SData* pnewData = new SData();
@@ -65,7 +68,7 @@ T* CFreelist<T>::GetData()
 				Lock_.UnLock();
 				return pdata;
 			}
-			pdata = pnewData->Data_;
+			pdata = &pnewData->Data_;
 			pnow->pNext_ = pnewData;
 			pnewData->IsUse_ = true;
 		}
@@ -93,3 +96,5 @@ const bool CFreelist<T>::ReturnData(T* preturnData)
 
 	return true;
 }
+
+#endif // !__FREELIST_HPP__
