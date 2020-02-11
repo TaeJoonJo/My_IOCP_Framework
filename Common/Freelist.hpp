@@ -6,8 +6,8 @@ template<typename T>
 CFreelist<T>::CFreelist(uint32_t dataNum)
 	: pFront_(nullptr)
 {
-	Lock_.Lock();
-	{
+	_BEGINLOCKGUARD(Lock_.GetMutex())
+	
 		pFront_ = new SData();
 		SData* pnow = pFront_;
 		SData* pnewData = nullptr;
@@ -16,8 +16,8 @@ CFreelist<T>::CFreelist(uint32_t dataNum)
 			pnow->pNext_ = pnewData;
 			pnow = pnewData;
 		}
-	}
-	Lock_.UnLock();
+
+	_ENDLOCKGUARD
 }
 
 template<typename T>
@@ -31,8 +31,8 @@ CFreelist<T>::~CFreelist()
 template<typename T>
 const bool CFreelist<T>::Clear()
 {
-	Lock_.Lock();
-	{
+	_BEGINLOCKGUARD(Lock_.GetMutex())
+	
 		SData* pnow = pFront_->pNext_;
 		SData* pnext = pnow->pNext_;
 		while (nullptr != pnow) {
@@ -40,8 +40,8 @@ const bool CFreelist<T>::Clear()
 			pnow = pnext;
 			pnext = pnext->pNext_;
 		}
-	}
-	Lock_.UnLock();
+	
+	_ENDLOCKGUARD
 
 	return true;
 }
@@ -51,8 +51,8 @@ T* CFreelist<T>::GetData()
 {
 	T* pdata = nullptr;
 
-	Lock_.Lock();
-	{
+	_BEGINLOCKGUARD(Lock_.GetMutex())
+	
 		SData* pnow = pFront_->pNext_;
 		while (nullptr != pnow) {
 			if (false == pnow->IsUse_) {
@@ -72,8 +72,8 @@ T* CFreelist<T>::GetData()
 			pnow->pNext_ = pnewData;
 			pnewData->IsUse_ = true;
 		}
-	}
-	Lock_.UnLock();
+	
+	_ENDLOCKGUARD
 
 	return pdata;
 }
@@ -81,8 +81,8 @@ T* CFreelist<T>::GetData()
 template<typename T>
 const bool CFreelist<T>::ReturnData(T* preturnData)
 {
-	Lock_.Lock();
-	{
+	_BEGINLOCKGUARD(Lock_.GetMutex())
+	
 		SData* pnow = pFront_->pNext_;
 		while (nullptr != pnow) {
 			if (true == pnow->IsUse_ && &(pnow->Data_) == preturnData) {
@@ -91,8 +91,8 @@ const bool CFreelist<T>::ReturnData(T* preturnData)
 			}
 			pnow = pnow->pNext_;
 		}
-	}
-	Lock_.UnLock();
+	
+	_ENDLOCKGUARD
 
 	return true;
 }

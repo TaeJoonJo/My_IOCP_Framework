@@ -3,22 +3,22 @@
 CTextFileWriter::CTextFileWriter(const char* path)
 	: FilePath_(path)
 {
-	FileLock_.Lock();
-	{
+	_BEGINLOCKGUARD(FileLock_.GetMutex())
+	
 		OS_.open(FilePath_, std::ios::out | std::ios::app);
-	}
-	FileLock_.UnLock();
+	
+	_ENDLOCKGUARD
 }
 
 CTextFileWriter::~CTextFileWriter()
 {
-	FileLock_.Lock();
-	{
+	_BEGINLOCKGUARD(FileLock_.GetMutex())
+	
 		if (true == OS_.is_open()) {
 			OS_.close();
 		}
-	}
-	FileLock_.UnLock();
+	
+	_ENDLOCKGUARD
 }
 
 const bool CTextFileWriter::ChangeFilePath(const char* path)
@@ -27,28 +27,28 @@ const bool CTextFileWriter::ChangeFilePath(const char* path)
 		return false;
 	}
 
-	FileLock_.Lock();
-	{
+	_BEGINLOCKGUARD(FileLock_.GetMutex())
+	
 		if (true == OS_.is_open())
 			OS_.close();
 		OS_.open(FilePath_, std::ios::out | std::ios::app);
-	}
-	FileLock_.UnLock();
+	
+	_ENDLOCKGUARD
 
 	return true;
 }
 
 const bool CTextFileWriter::Write(const char* str)
 {
-	FileLock_.Lock();
-	{
+	_BEGINLOCKGUARD(FileLock_.GetMutex())
+	
 		if (false == OS_.is_open()) {
 			FileLock_.UnLock();
 			return false;
 		}
 		OS_ << str;
-	}
-	FileLock_.UnLock();
+	
+	_ENDLOCKGUARD
 
 	return true;
 }

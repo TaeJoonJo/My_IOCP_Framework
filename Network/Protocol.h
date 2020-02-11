@@ -8,7 +8,7 @@
 enum EPacketType {
 	Test_
 };
-
+#pragma pack(push, 1)
 class PACKET_HEADER {
 public:
 	explicit PACKET_HEADER(char packetSize, EPacketType packetType)
@@ -42,6 +42,7 @@ public:
 	PACKET_HEADER header;
 	TCHAR str[MAX_STRING];
 };
+#pragma pack(pop)
 
 #endif // !__PROTOCOL_H__
 

@@ -98,15 +98,21 @@ const bool CLogSystem::Initalize(const char* path)
 
 void CLogSystem::Info(const char* str, ...)
 {
+    _ASSEMBLESTRING;
+
     CLogSystem::Log(str, CLogSystem::ELogType::INFO_);
 }
 
 void CLogSystem::Warning(const char* str, ...)
 {
+    _ASSEMBLESTRING;
+
     CLogSystem::Log(str, CLogSystem::ELogType::WARNING_);
 }
 
 void CLogSystem::Error(const char* str, ...)
 {
+    _ASSEMBLESTRING;
+
     CLogSystem::Log(str, CLogSystem::ELogType::ERROR_);
 }

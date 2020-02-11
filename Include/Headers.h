@@ -13,6 +13,7 @@
 #include <vector>
 #include <array>
 #include <unordered_set>
+#include <unordered_map>
 #include <mutex>
 #include <string>
 #include <functional>

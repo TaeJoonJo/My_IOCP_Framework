@@ -43,7 +43,6 @@ public:
 public:
 	const bool Initalize(SOCKET& s, uint32_t id);
 	const bool Clear();
-	// TODO : IoContext Freelist 구현
 	const bool Send(void* ppacket, IOContext* poverlapped);
 private:
 	volatile bool isRun_;
@@ -51,8 +50,7 @@ private:
 	uint32_t ID_;
 	SOCKET Socket_;
 
-	// Send는 동시다발적으로 발생할 수 있으므로 lock필요(?)
-	CMutexLock SendMutex_;
+	//CMutexLock SendMutex_;
 
 	ESessionStatus eStatus_;
 public:

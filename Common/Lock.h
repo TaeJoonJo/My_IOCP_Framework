@@ -52,6 +52,13 @@ public:
 	inline void UnLock() override {
 		Mutex_.unlock();
 	}
+	inline std::mutex& GetMutex() {
+		return Mutex_;
+	}
 };
+
+#define _BEGINLOCKGUARD(mtx)	{ \
+									std::lock_guard<std::mutex> localLockGuard(mtx);
+#define _ENDLOCKGUARD			}
 
 #endif // !__LOCK_H__

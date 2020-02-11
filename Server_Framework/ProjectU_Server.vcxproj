@@ -157,6 +157,9 @@
     <ClInclude Include="..\Network\Protocol.h" />
     <ClInclude Include="..\Network\Session.h" />
     <ClInclude Include="..\Network\SessionPool.h" />
+    <ClInclude Include="MemoryPool.h" />
+    <ClInclude Include="MemoryPool.hpp" />
+    <ClInclude Include="PacketHandler.h" />
     <ClInclude Include="ServerManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

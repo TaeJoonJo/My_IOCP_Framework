@@ -6,6 +6,7 @@
 #include "../Common/Singleton.h"
 #include "../Common/Lock.h"
 #include "../Common/Freelist.h"
+#include "../Common/MemoryPool.h"
 #include "Session.h"
 
 #ifdef _DEBUG
@@ -34,7 +35,7 @@ public:
 	const bool	Broadcasting(void* ppacket, std::unique_ptr<CFreelist<IOContext>>& freelist, CSession::ESessionStatus sendSessionStatus);
 private:
 	std::array<CSession*, MAX_SESSION>	aSessionPool_;
-
+	CDynamicMemoryPool<CSession, MAX_SESSION>		SessionPool_;
 	// 실제로 사용중인 Sessions
 	UNMAPSESSIONPOOL					UsingSessions_;
 	CMutexLock							SessionLock_;

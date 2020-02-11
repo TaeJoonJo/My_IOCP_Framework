@@ -39,6 +39,8 @@ const bool CSession::Clear()
 	IoContext_.Clear();
 	RecvBuffer_.Clear();
 
+	_RELEASESOCKET(Socket_);
+
 	return false;
 }
 

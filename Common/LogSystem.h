@@ -2,10 +2,11 @@
 #ifndef __LOGSYSTEM_H__
 #define __LOGSYSTEM_H__
 
-#include "Singleton.h"
 #include "../Include/Headers.h"
 
-#define DEFALUT_LOG_PATH "serverlog.log"
+#include "Singleton.h"
+
+#define DEFALUT_LOG_PATH "..\serverlog.log"
 
 constexpr uint8_t LOG_TYPE_NUM = 3;
 
@@ -44,8 +45,15 @@ public:
     CTextFileWriter*                        FileWriter_;
 };
 
-#define _LINFO(str, ...) CLogSystem::Info(str);
-#define _LWARNING(str, ...) CLogSystem::Warning(str);
-#define _LERROR(str, ...) CLogSystem::Error(str);
+#define _ASSEMBLESTRING     va_list vl;\
+                            char tmpStr[30]{};\
+                            va_start(vl, str);\
+                            vsprintf(tmpStr, str, vl);\
+                            va_end(vl);\
+                            str = tmpStr;
+
+#define _LINFO(str, ...)  CLogSystem::Info(str, __VA_ARGS__);
+#define _LWARNING(str, ...)  CLogSystem::Warning(str, __VA_ARGS__);
+#define _LERROR(str, ...)  CLogSystem::Error(str, __VA_ARGS__);
 
 #endif // !__LOGSYSTEM_H__

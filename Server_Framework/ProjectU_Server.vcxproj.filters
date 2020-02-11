@@ -54,6 +54,12 @@
     <Filter Include="Common\Freelist">
       <UniqueIdentifier>{1a2f409f-b922-4b3a-b597-f65025549f00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network\PacketHandler">
+      <UniqueIdentifier>{5a8c4d91-2b28-4492-9d23-13a8fa829413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\MemoryPool">
+      <UniqueIdentifier>{ed95acd4-f401-4e99-8c5f-925adfdfb5b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ServerManager.h">
@@ -115,6 +121,15 @@
     </ClInclude>
     <ClInclude Include="..\Include\Headers.h">
       <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketHandler.h">
+      <Filter>Network\PacketHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryPool.h">
+      <Filter>Common\MemoryPool</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryPool.hpp">
+      <Filter>Common\MemoryPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

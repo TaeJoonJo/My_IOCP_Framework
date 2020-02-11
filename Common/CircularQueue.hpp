@@ -73,4 +73,31 @@ const bool CCircularQueue<T>::Deq(T* pdata, uint32_t dataSize)
 	return true;
 }
 
+// just pop
+template<typename T>
+const bool CCircularQueue<T>::Deq(uint32_t dataSize)
+{
+	if (dataSize > GetNowQueueSize()) {
+		return false;
+	}
+
+	FrontIndex_ = (FrontIndex_ + 1) % MAX_QUEUE;
+	if (FrontIndex_ < RearIndex_) {
+		FrontIndex_ += (dataSize - 1) % MAX_QUEUE;
+	}
+	else {
+		uint32_t fronttoendSize = MAX_BUFFER - (FrontIndex_ + 1);
+		if (dataSize < fronttoendSize) {
+			FrontIndex_ += (dataSize - 1) % MAX_QUEUE;
+		}
+		else {
+			dataSize -= fronttoendSize;
+			now += dataSize;
+			FrontIndex_ = dataSize - 1;
+		}
+	}
+
+	return false;
+}
+
 #endif // !__CIRCULARQUEUE_HPP__

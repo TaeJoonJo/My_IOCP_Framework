@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include "ServerManager.h"
+#include "PacketHandler.h"
 #include "../Include/Const.h"
 #include "../Include/Define.h"
 #include "../Network/Network.h"
@@ -90,6 +91,8 @@ const bool CServerManager::Disconnect(uint32_t sessionID)
 		return false;
 	}
 
+	_LINFO("ID : %d Disconnected", sessionID)
+
 	return true;
 }
 
@@ -173,8 +176,8 @@ void CServerManager::_WorkerThread(LPVOID lp)
 
 const bool CServerManager::AcceptThread()
 {
-	_LINFO("AcceptThread Start");
-	//_LINFO("ID : %d AcceptThread Start", std::this_thread::get_id());
+	//_LINFO("AcceptThread Start");
+	_LINFO("ID : %d AcceptThread Start", std::this_thread::get_id());
 
 	SOCKET serverSoc = INVALID_SOCKET;
 	SOCKET clientSoc = INVALID_SOCKET;
@@ -194,7 +197,7 @@ const bool CServerManager::AcceptThread()
 	
 	// 바인드
 	serverAddr.sin_family		= PF_INET;
-	serverAddr.sin_port			= htons(SERVER_PORT);
+	serverAddr.sin_port			= htons(SERVERPORT);
 	serverAddr.sin_addr.s_addr	= htonl(INADDR_ANY);
 	if (SOCKET_ERROR == bind(serverSoc, reinterpret_cast<SOCKADDR*>(&serverAddr), addrLen)) {
 		_LERROR("bind()");
@@ -242,6 +245,7 @@ const bool CServerManager::AcceptThread()
 		if (INVALID_HANDLE_VALUE == CreateIoCompletionPort(reinterpret_cast<HANDLE>(clientSoc), IOCP_->GetIOCP(), reinterpret_cast<ULONG_PTR>(psession), 0)) {
 			// TODO : 대기열 or 접속 끊기
 			_LWARNING("Fail Connect IOCP ID : %d", sessionID);
+			this->Disconnect(psession);
 		}
 		_LINFO("OK SessionJoin ID : %d", sessionID);
 
@@ -263,8 +267,7 @@ const bool CServerManager::AcceptThread()
 
 const bool CServerManager::WorkerThread()
 {
-	_LINFO("WorkerThread Start");
-	//_LINFO("ID : %d WorkerThread Start", std::this_thread::get_id());
+	_LINFO("ID : %d WorkerThread Start", std::this_thread::get_id());
 
 	CSession*			psession = nullptr;
 	IOContext*			poverlapped = nullptr;
@@ -287,24 +290,25 @@ const bool CServerManager::WorkerThread()
 		// 오류 처리
 		if (0 != returnValue) {
 			if (WAIT_TIMEOUT == returnValue) {
-
+				Disconnect(psession);
 			}
 			else if (ERROR_NETNAME_DELETED == returnValue) {
-
+				Disconnect(psession);
 			}
 			else {
-
+				Disconnect(psession);
 			}
 			continue;
 		}
 
+		// 무슨 경우?
 		if (nullptr == psession) {
-
+			continue;
 		}
 
 		// 클라이언트쪽에서 연결끊음
 		if (0 == ioByte) {
-
+			Disconnect(psession);
 		}
 		ioType = poverlapped->Type_;
 
@@ -360,8 +364,6 @@ const bool CServerManager::WorkerThread()
 
 		} while (1);
 		}
-
-		// TODO 
 	}
 
 	_LINFO("WorkerThread End");
@@ -376,11 +378,13 @@ const bool CServerManager::PacketProcess(CSession* psession)
 	PACKET_HEADER* pheader = reinterpret_cast<PACKET_HEADER*>(buf);
 	psession->RecvBuffer_.Deq(buf + sizeof(PACKET_HEADER), pheader->size_ - sizeof(PACKET_HEADER));
 
+	_EXECPACKET(pheader)
+	
 	switch (pheader->type_) {
 	case EPacketType::Test_:
 	{
-		C2S_PACKET_TEST* ppacket = reinterpret_cast<C2S_PACKET_TEST*>(buf);
-		uint32_t id = ppacket->id;
+		//C2S_PACKET_TEST* ppacket = reinterpret_cast<C2S_PACKET_TEST*>(buf);
+		//uint32_t id = ppacket->;
 	} break;
 
 	default:
