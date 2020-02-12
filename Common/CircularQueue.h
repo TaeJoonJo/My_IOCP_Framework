@@ -32,7 +32,10 @@ private:
 	uint32_t					RearIndex_;
 public:
 	// 데이터가 있는 인덱스부터 몇번째 데이터를 얻어올지
-	inline const T* GetData(uint32_t index) const {
+	inline const T* GetAt(uint32_t index) const {
+		return &Queue_[(FrontIndex_ + 1 + index) % MAX_QUEUE];
+	}
+	inline T* GetAt(uint32_t index) {
 		return &Queue_[(FrontIndex_ + 1 + index) % MAX_QUEUE];
 	}
 	inline const uint32_t GetNowQueueSize() const {

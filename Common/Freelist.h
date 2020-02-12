@@ -8,6 +8,7 @@
 template<typename T>
 class CFreelist {
 public:
+	CFreelist() = delete;
 	explicit CFreelist(uint32_t num);
 	~CFreelist();
 	CFreelist(const CFreelist& o) = delete;

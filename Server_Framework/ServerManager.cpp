@@ -32,13 +32,10 @@ const bool CServerManager::InitalizeServer()
 		return false;
 	}
 
-	SessionPool_ = CSessionPool::GetInstance();
-	if (false == SessionPool_->Initalize()) {
-		_LERROR("SessionPool_ Initalize()");
+	if (false == this->InitalizeInfo()) {
+		_LERROR("InitalizeInfo()");
 		return false;
 	}
-
-	pSendIOContextList_ = std::make_unique<CFreelist<IOContext>>(MAX_SESSION);
 
 	if (false == this->InitalizeThread()) {
 		_LERROR("InitalizeThread()");
@@ -66,7 +63,7 @@ const bool CServerManager::CloseServer()
 		_LERROR("EndNetwork()");
 	}
 
-	if (false == SessionPool_->Destroy()) {
+	if (false == pSessionPool_->Destroy()) {
 		_LERROR("SessionPool_ Destroy()");
 	}
 	
@@ -86,7 +83,7 @@ const bool CServerManager::Disconnect(CSession* psession)
 
 const bool CServerManager::Disconnect(uint32_t sessionID)
 {
-	if (false == SessionPool_->LeaveSession(sessionID)) {
+	if (false == pSessionPool_->LeaveSession(sessionID)) {
 		_LWARNING("");
 		return false;
 	}
@@ -133,6 +130,24 @@ const bool CServerManager::InitalizeThread()
 	}
 
 	_LINFO("InitalizeThread() End");
+
+	return true;
+}
+
+const bool CServerManager::InitalizeInfo()
+{
+	pSessionPool_ = CSessionPool::GetInstance();
+	if (false == pSessionPool_->Initalize()) {
+		_LERROR("SessionPool_ Initalize()");
+		return false;
+	}
+
+	pSendIOContextList_ = std::make_unique<CFreelist<IOContext>>(MAX_SESSION);
+	
+	pPacketHandler_ = std::make_unique<CPacketHandler>();
+#pragma region RegisterPacketHandler	
+	pPacketHandler_->RegisterPacketHandler(this, EPacketType::Test, &CServerManager::Recv_Packet_C2S_Test);
+#pragma endregion
 
 	return true;
 }
@@ -234,7 +249,7 @@ const bool CServerManager::AcceptThread()
 		}
 
 		/* 들어온 클라이언트 처리 */
-		CSession* psession = SessionPool_->JoinSession(clientSoc, sessionID);
+		CSession* psession = pSessionPool_->JoinSession(clientSoc, sessionID);
 		if (nullptr == psession) {
 			// TODO : 대기열 or 접속 끊기
 			_LWARNING("Fail JoinSession ID : %d", sessionID);
@@ -250,6 +265,8 @@ const bool CServerManager::AcceptThread()
 		_LINFO("OK SessionJoin ID : %d", sessionID);
 
 		++_SessionID;
+		psession->IoContext_.Wsabuf_.buf = psession->IoContext_.Buf_;
+		psession->IoContext_.Wsabuf_.len = MAX_BUFFER;
 		int rtv = WSARecv(clientSoc, &(psession->IoContext_.Wsabuf_), 1, 0, &flags, &(psession->IoContext_.Overlapped_), NULL);
 		if (SOCKET_ERROR == rtv) {
 			int errCode = WSAGetLastError();
@@ -320,7 +337,7 @@ const bool CServerManager::WorkerThread()
 			char* pbuf = psession->IoContext_.Buf_;
 
 			if (0 != psession->RecvBuffer_.GetNowQueueSize()) {
-				packetHeader = reinterpret_cast<const PACKET_HEADER*>(psession->RecvBuffer_.GetData(0));
+				packetHeader = reinterpret_cast<const PACKET_HEADER*>(psession->RecvBuffer_.GetAt(0));
 				packetSize = static_cast<int>(packetHeader->size_);
 			}
 			while (0 < ioByte) {
@@ -336,7 +353,9 @@ const bool CServerManager::WorkerThread()
 				else {
 					psession->RecvBuffer_.Enq(pbuf, required);
 					// RecvBuf에 쌓인 데이터 처리
-					PacketProcess(psession);
+					if (false == PacketProcess(psession)) {
+						
+					}
 
 					// 다음 패킷을 조립하기 위한 준비
 					ioByte -= required;
@@ -373,25 +392,20 @@ const bool CServerManager::WorkerThread()
 
 const bool CServerManager::PacketProcess(CSession* psession)
 {
-	char buf[MAX_BUFFER]{};
-	psession->RecvBuffer_.Deq(buf, PACKET_HEADER_SIZE);
-	PACKET_HEADER* pheader = reinterpret_cast<PACKET_HEADER*>(buf);
-	psession->RecvBuffer_.Deq(buf + sizeof(PACKET_HEADER), pheader->size_ - sizeof(PACKET_HEADER));
+	//int8_t buf[MAX_BUFFER]{};
+	//psession->RecvBuffer_.Deq((char*)buf, PACKET_HEADER_SIZE);
+	//PACKET_HEADER* pheader = reinterpret_cast<PACKET_HEADER*>(buf);
+	//psession->RecvBuffer_.Deq((char*)(buf + sizeof(PACKET_HEADER)), pheader->size_ - sizeof(PACKET_HEADER));
 
-	_EXECPACKET(pheader)
-	
-	switch (pheader->type_) {
-	case EPacketType::Test_:
-	{
-		//C2S_PACKET_TEST* ppacket = reinterpret_cast<C2S_PACKET_TEST*>(buf);
-		//uint32_t id = ppacket->;
-	} break;
+	int8_t* pbuf = reinterpret_cast<int8_t*>(psession->RecvBuffer_.GetAt(0));
+	const PACKET_HEADER* pheader = reinterpret_cast<const PACKET_HEADER*>(psession->RecvBuffer_.GetAt(0));
 
-	default:
-	{
+	bool returnValue = pPacketHandler_->ExecutePacketHandler(pheader->type_, psession, pbuf);
 
-	} break;
+	if (false == psession->RecvBuffer_.Deq(pheader->size_)) {
+
 	}
 
-	return true;
+	return returnValue;
 }
+

@@ -125,10 +125,10 @@
     <ClInclude Include="PacketHandler.h">
       <Filter>Network\PacketHandler</Filter>
     </ClInclude>
-    <ClInclude Include="MemoryPool.h">
+    <ClInclude Include="..\Common\MemoryPool.h">
       <Filter>Common\MemoryPool</Filter>
     </ClInclude>
-    <ClInclude Include="MemoryPool.hpp">
+    <ClInclude Include="..\Common\MemoryPool.hpp">
       <Filter>Common\MemoryPool</Filter>
     </ClInclude>
   </ItemGroup>
@@ -159,6 +159,9 @@
     </ClCompile>
     <ClCompile Include="..\Network\SessionPool.cpp">
       <Filter>Network\SessionPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Recv_Packet_.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

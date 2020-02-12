@@ -92,7 +92,6 @@ const bool CCircularQueue<T>::Deq(uint32_t dataSize)
 		}
 		else {
 			dataSize -= fronttoendSize;
-			now += dataSize;
 			FrontIndex_ = dataSize - 1;
 		}
 	}

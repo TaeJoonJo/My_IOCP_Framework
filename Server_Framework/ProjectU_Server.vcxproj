@@ -146,6 +146,8 @@
     <ClInclude Include="..\Common\Freelist.hpp" />
     <ClInclude Include="..\Common\Lock.h" />
     <ClInclude Include="..\Common\LogSystem.h" />
+    <ClInclude Include="..\Common\MemoryPool.h" />
+    <ClInclude Include="..\Common\MemoryPool.hpp" />
     <ClInclude Include="..\Common\Singleton.h" />
     <ClInclude Include="..\Common\TextFileWriter.h" />
     <ClInclude Include="..\Common\Thread.h" />
@@ -157,8 +159,6 @@
     <ClInclude Include="..\Network\Protocol.h" />
     <ClInclude Include="..\Network\Session.h" />
     <ClInclude Include="..\Network\SessionPool.h" />
-    <ClInclude Include="MemoryPool.h" />
-    <ClInclude Include="MemoryPool.hpp" />
     <ClInclude Include="PacketHandler.h" />
     <ClInclude Include="ServerManager.h" />
     <ClInclude Include="stdafx.h" />
@@ -172,6 +172,7 @@
     <ClCompile Include="..\Network\Session.cpp" />
     <ClCompile Include="..\Network\SessionPool.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Recv_Packet_.cpp" />
     <ClCompile Include="ServerManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

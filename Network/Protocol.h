@@ -6,7 +6,7 @@
 #include "../Include/Const.h"
 
 enum EPacketType {
-	Test_
+	Test
 };
 #pragma pack(push, 1)
 class PACKET_HEADER {

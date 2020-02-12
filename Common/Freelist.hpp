@@ -18,6 +18,8 @@ CFreelist<T>::CFreelist(uint32_t dataNum)
 		}
 
 	_ENDLOCKGUARD
+
+	_LINFO("CFreelist Initalize Size [ %d ]", dataNum);
 }
 
 template<typename T>

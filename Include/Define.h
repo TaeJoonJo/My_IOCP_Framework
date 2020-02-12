@@ -15,6 +15,16 @@
 // printf
 #define _PFDEBUG(f) printf("Fail %s in %s\n", #f, __FUNCTION__)
 
+
+
+#define _DISABLECOPY(type)			public:\
+									type(const type&) = delete;\
+									type& operator=(const type&) = delete;
+
+#define _DEAFAULT(type)				type() = default;\
+									~type() = default;
+
+
 #define _RELEASEPTR(ptr)	if(ptr) delete(ptr);\
 							ptr = nullptr;
 #define _RELEASEHANDLE(handle)	CloseHandle(handle);\

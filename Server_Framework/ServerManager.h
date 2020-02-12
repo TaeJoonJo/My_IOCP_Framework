@@ -4,6 +4,7 @@
 
 #include "../Common/Thread.h"
 #include "../Network/Session.h"
+#include "PacketHandler.h"
 
 class CIOCompletionPort;
 
@@ -24,6 +25,7 @@ private:
 
 	const bool InitalizeNetwork();
 	const bool InitalizeThread();
+	const bool InitalizeInfo();
 
 	const bool IsCorrectAddr(SOCKADDR_IN& addr);
 
@@ -36,6 +38,8 @@ private:
 	const bool WorkerThread();
 
 	const bool PacketProcess(CSession* psession);
+
+	const bool Recv_Packet_C2S_Test(CSession* psession, int8_t* ppacketData);
 public:
 	const bool StartServer();
 	const bool CloseServer();
@@ -48,9 +52,10 @@ private:
 	CThread				AcceptThread_;
 	CMultiThread		WorkerThread_;
 
-	std::shared_ptr<CSessionPool> SessionPool_;
+	std::shared_ptr<CSessionPool> pSessionPool_;
 
-	std::unique_ptr<CFreelist<IOContext>> pSendIOContextList_;
+	std::unique_ptr<CFreelist<IOContext>>	pSendIOContextList_;
+	std::unique_ptr<CPacketHandler>			pPacketHandler_;
 };
 
 #endif // !__SERVERMANAGER_H__
