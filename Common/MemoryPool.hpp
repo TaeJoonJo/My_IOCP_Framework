@@ -78,7 +78,7 @@ inline const bool CDynamicMemoryPool<T, poolSize>::Initalize()
 template<typename T, uint32_t poolSize>
 inline const bool CDynamicMemoryPool<T, poolSize>::Destroy()
 {
-	for (int i = 0; i < PoolSize_; ++i) {
+	for (uint32_t i = 0; i < PoolSize_; ++i) {
 		_RELEASEPTR(MemoryArray_[i]);
 	}
 

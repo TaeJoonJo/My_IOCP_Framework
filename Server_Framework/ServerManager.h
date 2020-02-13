@@ -4,12 +4,13 @@
 
 #include "../Common/Thread.h"
 #include "../Network/Session.h"
-#include "PacketHandler.h"
 
 class CIOCompletionPort;
-
 class CSessionPool;
-
+namespace Packet {
+	class CPacketHandler;
+	class CPacketManager;
+}
 template<typename T>
 class CFreelist;
 
@@ -39,7 +40,7 @@ private:
 
 	const bool PacketProcess(CSession* psession);
 
-	const bool Recv_Packet_C2S_Test(CSession* psession, int8_t* ppacketData);
+	const bool Recv_Packet_C2S_Test(CSession* psession, Packet::CPacketManager* ppacketData);
 public:
 	const bool StartServer();
 	const bool CloseServer();
@@ -55,7 +56,7 @@ private:
 	std::shared_ptr<CSessionPool> pSessionPool_;
 
 	std::unique_ptr<CFreelist<IOContext>>	pSendIOContextList_;
-	std::unique_ptr<CPacketHandler>			pPacketHandler_;
+	std::unique_ptr<Packet::CPacketHandler>			pPacketHandler_;
 };
 
 #endif // !__SERVERMANAGER_H__

@@ -1,13 +1,13 @@
 
 #include "stdafx.h"
 #include "ServerManager.h"
-#include "PacketHandler.h"
 #include "../Include/Const.h"
 #include "../Include/Define.h"
 #include "../Network/Network.h"
 #include "../Network/IOCP.h"
 #include "../Network/SessionPool.h"
 #include "../Network/Protocol.h"
+#include "../Network/PacketHandler.h"
 #include "../Common/LogSystem.h"
 #include "../Common/Freelist.h"
 
@@ -144,9 +144,9 @@ const bool CServerManager::InitalizeInfo()
 
 	pSendIOContextList_ = std::make_unique<CFreelist<IOContext>>(MAX_SESSION);
 	
-	pPacketHandler_ = std::make_unique<CPacketHandler>();
+	pPacketHandler_ = std::make_unique<Packet::CPacketHandler>();
 #pragma region RegisterPacketHandler	
-	pPacketHandler_->RegisterPacketHandler(this, EPacketType::Test, &CServerManager::Recv_Packet_C2S_Test);
+	pPacketHandler_->RegisterPacketHandler(this, Packet::EPacketType::Test, &CServerManager::Recv_Packet_C2S_Test);
 #pragma endregion
 
 	return true;
@@ -332,29 +332,27 @@ const bool CServerManager::WorkerThread()
 		switch (ioType) {
 		case EIOType::RECV_:
 		{
-			const PACKET_HEADER* packetHeader = nullptr;
-			int packetSize = 0;
+			int32_t packetSize = 0;
 			char* pbuf = psession->IoContext_.Buf_;
-
+			
+			// 이전에 받은 데이터가 있다면 recvbuffer에서 패킷크기를 받아온다.
 			if (0 != psession->RecvBuffer_.GetNowQueueSize()) {
-				packetHeader = reinterpret_cast<const PACKET_HEADER*>(psession->RecvBuffer_.GetAt(0));
-				packetSize = static_cast<int>(packetHeader->size_);
+				packetSize = *reinterpret_cast<Packet::PACKETSIZE_T*>(psession->RecvBuffer_.GetAt(0));
 			}
 			while (0 < ioByte) {
+				// 패킷 크기를 알아내지 못했다면, 받은 패킷에서 읽는다.
 				if (packetSize == 0) {
-					packetSize = pbuf[0];
+					packetSize = *reinterpret_cast<Packet::PACKETSIZE_T*>(pbuf);
 				}
 				UINT required = packetSize - psession->RecvBuffer_.GetNowQueueSize();		// 패킷을 완성하는데 필요한 바이트 수
-				//UINT required = packetSize - psession->m_nPrevSize;		// 패킷을 완성하는데 필요한 바이트 수
-				if (ioByte < required) { // 완성하지 못하면
+				if (ioByte < required) { // 완성하지 못하면 RecvBuffer에 넣어주고 빠져나간다.
 					psession->RecvBuffer_.Enq(pbuf, ioByte);
 					break;
 				}
-				else {
+				else {	// 패킷을 완성할 수 있다면
 					psession->RecvBuffer_.Enq(pbuf, required);
-					// RecvBuf에 쌓인 데이터 처리
 					if (false == PacketProcess(psession)) {
-						
+						_LWARNING("Session ID : [ %d ] PacketProcess Return false", psession->GetID());
 					}
 
 					// 다음 패킷을 조립하기 위한 준비
@@ -397,12 +395,18 @@ const bool CServerManager::PacketProcess(CSession* psession)
 	//PACKET_HEADER* pheader = reinterpret_cast<PACKET_HEADER*>(buf);
 	//psession->RecvBuffer_.Deq((char*)(buf + sizeof(PACKET_HEADER)), pheader->size_ - sizeof(PACKET_HEADER));
 
-	int8_t* pbuf = reinterpret_cast<int8_t*>(psession->RecvBuffer_.GetAt(0));
-	const PACKET_HEADER* pheader = reinterpret_cast<const PACKET_HEADER*>(psession->RecvBuffer_.GetAt(0));
+	CDataBuffer dataBuffer(psession->RecvBuffer_.GetAt(0));
+	Packet::CPacketManager packetManager(dataBuffer);
 
-	bool returnValue = pPacketHandler_->ExecutePacketHandler(pheader->type_, psession, pbuf);
+	//int8_t* pbuf = reinterpret_cast<int8_t*>(psession->RecvBuffer_.GetAt(0));
+	//const PACKET_HEADER* pheader = reinterpret_cast<const PACKET_HEADER*>(psession->RecvBuffer_.GetAt(0));
 
-	if (false == psession->RecvBuffer_.Deq(pheader->size_)) {
+	//bool returnValue = pPacketHandler_->ExecutePacketHandler(pheader->type_, psession, pbuf);
+
+	bool returnValue = pPacketHandler_->ExecutePacketHandler(packetManager.GetType(), psession, &packetManager);
+
+	// TODO : pop을 함수 초기에 해줘야하나? (위험이 있는지 생각...)
+	if (false == psession->RecvBuffer_.Pop(packetManager.GetSize())) {
 
 	}
 

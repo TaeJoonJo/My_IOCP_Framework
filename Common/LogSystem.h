@@ -46,7 +46,7 @@ public:
 };
 
 #define _ASSEMBLESTRING     va_list vl;\
-                            char tmpStr[30]{};\
+                            char tmpStr[50]{};\
                             va_start(vl, str);\
                             vsprintf(tmpStr, str, vl);\
                             va_end(vl);\

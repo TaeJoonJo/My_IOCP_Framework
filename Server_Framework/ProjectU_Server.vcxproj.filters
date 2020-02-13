@@ -60,6 +60,9 @@
     <Filter Include="Common\MemoryPool">
       <UniqueIdentifier>{ed95acd4-f401-4e99-8c5f-925adfdfb5b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common\DataBuffer">
+      <UniqueIdentifier>{4b4422bb-dc3d-4ed3-8680-0d767a7211fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ServerManager.h">
@@ -122,14 +125,17 @@
     <ClInclude Include="..\Include\Headers.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="PacketHandler.h">
-      <Filter>Network\PacketHandler</Filter>
-    </ClInclude>
     <ClInclude Include="..\Common\MemoryPool.h">
       <Filter>Common\MemoryPool</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\MemoryPool.hpp">
       <Filter>Common\MemoryPool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataBuffer.h">
+      <Filter>Common\DataBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Network\PacketHandler.h">
+      <Filter>Network\PacketHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +168,9 @@
     </ClCompile>
     <ClCompile Include="Recv_Packet_.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\DataBuffer.cpp">
+      <Filter>Common\DataBuffer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

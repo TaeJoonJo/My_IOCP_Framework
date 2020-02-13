@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="..\Common\CircularQueue.h" />
     <ClInclude Include="..\Common\CircularQueue.hpp" />
+    <ClInclude Include="..\Common\DataBuffer.h" />
     <ClInclude Include="..\Common\Freelist.h" />
     <ClInclude Include="..\Common\Freelist.hpp" />
     <ClInclude Include="..\Common\Lock.h" />
@@ -156,15 +157,16 @@
     <ClInclude Include="..\Include\Headers.h" />
     <ClInclude Include="..\Network\IOCP.h" />
     <ClInclude Include="..\Network\Network.h" />
+    <ClInclude Include="..\Network\PacketHandler.h" />
     <ClInclude Include="..\Network\Protocol.h" />
     <ClInclude Include="..\Network\Session.h" />
     <ClInclude Include="..\Network\SessionPool.h" />
-    <ClInclude Include="PacketHandler.h" />
     <ClInclude Include="ServerManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Common\DataBuffer.cpp" />
     <ClCompile Include="..\Common\LogSystem.cpp" />
     <ClCompile Include="..\Common\TextFileWriter.cpp" />
     <ClCompile Include="..\Common\Thread.cpp" />

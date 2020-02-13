@@ -6,6 +6,7 @@
 #include "../Include/Const.h"
 #include "../Common/Lock.h"
 #include "../Common/CircularQueue.h"
+#include "../Network/flatbuffers/flatbuffers.h"
 
 enum EIOType {
 	RECV_ = 0,
@@ -50,13 +51,17 @@ private:
 	uint32_t ID_;
 	SOCKET Socket_;
 
-	//CMutexLock SendMutex_;
+	flatbuffers::FlatBufferBuilder	FlatBufferBuilder_;
+	CMutexLock						FBBLock_;
 
 	ESessionStatus eStatus_;
 public:
 	IOContext IoContext_;
 	CCircularQueue<char> RecvBuffer_;
 public:
+	inline flatbuffers::FlatBufferBuilder& GetFlatBufferBuilder() {
+		return FlatBufferBuilder_;
+	}
 	inline const bool IsRun() const {
 		return isRun_;
 	}

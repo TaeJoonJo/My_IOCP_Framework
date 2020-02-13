@@ -75,7 +75,7 @@ const bool CCircularQueue<T>::Deq(T* pdata, uint32_t dataSize)
 
 // just pop
 template<typename T>
-const bool CCircularQueue<T>::Deq(uint32_t dataSize)
+const bool CCircularQueue<T>::Pop(uint32_t dataSize)
 {
 	if (dataSize > GetNowQueueSize()) {
 		return false;

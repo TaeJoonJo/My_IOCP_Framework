@@ -50,7 +50,11 @@ public:
 		Mutex_.lock();
 	}
 	inline void UnLock() override {
+		
 		Mutex_.unlock();
+	}
+	inline const bool IsLocked() {
+		return Mutex_.try_lock();
 	}
 	inline std::mutex& GetMutex() {
 		return Mutex_;

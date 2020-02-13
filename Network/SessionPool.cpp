@@ -23,6 +23,8 @@ const bool CSessionPool::Initalize()
 	
 	_ENDLOCKGUARD
 
+	_LINFO("SessionPool Initalize Size : [ %d ]", MAX_SESSION);
+
 	return true;
 }
 
@@ -43,6 +45,11 @@ const bool CSessionPool::Destroy()
 
 CSession* CSessionPool::JoinSession(SOCKET& socket, uint32_t sessionID)
 {
+	if (INVALID_SOCKET == socket) {
+		_LWARNING("JoinSession SOCKET INVALID_SOCKET");
+		return false;
+	}
+
 	CSession* psession = nullptr;
 
 	_BEGINLOCKGUARD(SessionLock_.GetMutex())

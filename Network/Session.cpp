@@ -29,6 +29,9 @@ const bool CSession::Initalize(SOCKET& s, uint32_t id)
 	IoContext_.Clear();
 	RecvBuffer_.Clear();
 
+	IoContext_.Wsabuf_.buf = IoContext_.Buf_;
+	IoContext_.Wsabuf_.len = MAX_BUFFER;
+
 	return true;
 }
 

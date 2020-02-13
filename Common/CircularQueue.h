@@ -23,7 +23,7 @@ public:
 	void Clear();
 	const bool Enq(const T* pdata, uint32_t dataSize);
 	const bool Deq(T* pdata, uint32_t dataSize);
-	const bool Deq(uint32_t dataSize);
+	const bool Pop(uint32_t dataSize);
 private:
 	std::array<T, MAX_QUEUE>	Queue_;
 
