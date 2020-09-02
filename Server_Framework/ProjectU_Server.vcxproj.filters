@@ -166,11 +166,11 @@
     <ClCompile Include="..\Network\SessionPool.cpp">
       <Filter>Network\SessionPool</Filter>
     </ClCompile>
-    <ClCompile Include="Recv_Packet_.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
     <ClCompile Include="..\Common\DataBuffer.cpp">
       <Filter>Common\DataBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonPKTHandler.cpp">
+      <Filter>Network\PacketHandler</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

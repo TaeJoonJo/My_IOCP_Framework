@@ -43,12 +43,9 @@ const bool CThread::Start()
 	return true;
 }
 
-// 실행중인 스레드 중단?
-const bool CThread::Stop()
+void CThread::Stop()
 {
 	isRun_ = false;
-
-	return true;
 }
 
 const bool CThread::Join()
@@ -134,19 +131,14 @@ const bool CMultiThread::Start()
 	return brt;
 }
 
-const bool CMultiThread::Stop()
+void CMultiThread::Stop()
 {
-	bool brt = true;
 
 	for (auto& t : vThreads_) {
-		if (false == t.Stop()) {
-			brt = false;
-		}
+		t.Stop();
 	}
 
 	isRun_ = false;
-
-	return brt;
 }
 
 const bool CMultiThread::Join()

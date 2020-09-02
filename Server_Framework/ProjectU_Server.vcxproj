@@ -173,8 +173,8 @@
     <ClCompile Include="..\Network\IOCP.cpp" />
     <ClCompile Include="..\Network\Session.cpp" />
     <ClCompile Include="..\Network\SessionPool.cpp" />
+    <ClCompile Include="CommonPKTHandler.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Recv_Packet_.cpp" />
     <ClCompile Include="ServerManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

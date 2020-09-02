@@ -40,10 +40,14 @@ private:
 
 	const bool PacketProcess(CSession* psession);
 
+#pragma region PKTHandle
 	const bool Recv_Packet_C2S_Test(CSession* psession, Packet::CPacketManager* ppacketData);
+#pragma endregion
+	
 public:
-	const bool StartServer();
-	const bool CloseServer();
+	const bool	StartServer();
+	void		StopServer();
+	const bool	CloseServer();
 
 	const bool Disconnect(CSession* psession);
 	const bool Disconnect(uint32_t sessionID);
@@ -55,7 +59,7 @@ private:
 
 	std::shared_ptr<CSessionPool> pSessionPool_;
 
-	std::unique_ptr<CFreelist<IOContext>>	pSendIOContextList_;
+	std::unique_ptr<CFreelist<IOContext>>			pSendIOContextList_;
 	std::unique_ptr<Packet::CPacketHandler>			pPacketHandler_;
 };
 

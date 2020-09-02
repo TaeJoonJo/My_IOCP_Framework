@@ -24,9 +24,9 @@ public:
 public:
 	const bool Initalize(void (*func)(LPVOID), LPVOID lp);
 	
-	const bool Start();
-	const bool Stop();
-	const bool Join();
+	const bool	Start();
+	void		Stop();
+	const bool	Join();
 private:
 	static void _ThreadFunc(LPVOID lpc);
 	const bool Run();
@@ -62,9 +62,9 @@ private:
 public:
 	const bool Initalize(uint16_t threadNum, void (*func)(LPVOID), LPVOID lp);
 
-	const bool Start();
-	const bool Stop();
-	const bool Join();
+	const bool	Start();
+	void		Stop();
+	const bool	Join();
 public:
 	//const uint16_t GetCurrentThreadNum() const;
 	inline const bool IsRun() const {

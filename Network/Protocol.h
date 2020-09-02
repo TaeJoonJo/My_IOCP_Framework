@@ -66,7 +66,7 @@ namespace Serialize {
 namespace Packet {
 
 	enum EPacketType : uint8_t {
-		Test = 0
+		Test = 0,
 	};
 
 	using PACKETSIZE_T = uint16_t;

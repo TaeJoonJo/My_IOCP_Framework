@@ -171,6 +171,15 @@ const bool CServerManager::StartServer()
 	return true;
 }
 
+void CServerManager::StopServer()
+{
+	_LINFO("StopServer()");
+
+	AcceptThread_.Stop();
+
+	WorkerThread_.Stop();
+}
+
 void CServerManager::_AcceptThread(LPVOID lp)
 {
 	CServerManager* pthis = reinterpret_cast<CServerManager*>(lp);
@@ -318,7 +327,6 @@ const bool CServerManager::WorkerThread()
 			continue;
 		}
 
-		// 무슨 경우?
 		if (nullptr == psession) {
 			continue;
 		}
@@ -395,15 +403,23 @@ const bool CServerManager::PacketProcess(CSession* psession)
 	//PACKET_HEADER* pheader = reinterpret_cast<PACKET_HEADER*>(buf);
 	//psession->RecvBuffer_.Deq((char*)(buf + sizeof(PACKET_HEADER)), pheader->size_ - sizeof(PACKET_HEADER));
 
-	CDataBuffer dataBuffer(psession->RecvBuffer_.GetAt(0));
-	Packet::CPacketManager packetManager(dataBuffer);
-
 	//int8_t* pbuf = reinterpret_cast<int8_t*>(psession->RecvBuffer_.GetAt(0));
 	//const PACKET_HEADER* pheader = reinterpret_cast<const PACKET_HEADER*>(psession->RecvBuffer_.GetAt(0));
 
 	//bool returnValue = pPacketHandler_->ExecutePacketHandler(pheader->type_, psession, pbuf);
 
-	bool returnValue = pPacketHandler_->ExecutePacketHandler(packetManager.GetType(), psession, &packetManager);
+	CDataBuffer dataBuffer(psession->RecvBuffer_.GetAt(0));
+	Packet::CPacketManager packetManager(dataBuffer);
+
+	bool returnValue = true;
+	try 
+	{
+		returnValue = pPacketHandler_->ExecutePacketHandler(packetManager.GetType(), psession, &packetManager);
+	}
+	catch(std::exception& e)
+	{
+		_LERROR(e.what());
+	}
 
 	// TODO : pop을 함수 초기에 해줘야하나? (위험이 있는지 생각...)
 	if (false == psession->RecvBuffer_.Pop(packetManager.GetSize())) {

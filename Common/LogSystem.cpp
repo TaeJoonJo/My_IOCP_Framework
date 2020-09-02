@@ -51,7 +51,7 @@ void CLogSystem::Log(const char* text, ELogType type)
         oss << plogger->UnknownLogType_;
     }
 
-    SYSTEMTIME st;
+    SYSTEMTIME st{};
     GetLocalTime(&st);
 
     oss << " [" 
